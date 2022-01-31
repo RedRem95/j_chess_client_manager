@@ -3,7 +3,7 @@ j-chess bot manager
 ===================
 
 
-.. image:: https://img.shields.io/pypi/v/j_chessclient_manager.svg
+.. image:: https://img.shields.io/pypi/v/j_chess_client_manager.svg
         :target: https://pypi.python.org/pypi/j_chess_client_manager
 
 .. image:: https://readthedocs.org/projects/j-chess-client-manager/badge/?version=latest
@@ -23,6 +23,19 @@ Features
 
 * Start clients using a UI
 * See the current playstate of your clients
+
+Screenshots
+###########
+
+.. image:: images/Screenshot_main.png
+  :alt: Screenshot of main UI
+
+Screenshot showing the main UI with the chessboard, logs, metrics, clients
+
+.. image:: images/Screenshot_client.png
+  :alt: Screenshot of menu to add a new AI
+
+Screenshot showing menu to add a new AI
 
 TODO
 ####
