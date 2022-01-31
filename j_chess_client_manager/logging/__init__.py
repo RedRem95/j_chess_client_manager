@@ -11,7 +11,7 @@ _lib_logger.handlers = []
 
 class _CustomQueueHandler(QueueHandler):
 
-    def __init__(self, code: str, log_queue: queue.Queue[Tuple[str, logging.LogRecord]]):
+    def __init__(self, code: str, log_queue):
         super().__init__(log_queue)
         self._code = code
 
@@ -19,7 +19,7 @@ class _CustomQueueHandler(QueueHandler):
         self.queue.put((self._code, record))
 
 
-LOG_QUEUE: queue.Queue[Tuple[str, logging.LogRecord]] = queue.Queue()
+LOG_QUEUE = queue.Queue()
 
 
 def get_log_handler(code: str) -> logging.Handler:
