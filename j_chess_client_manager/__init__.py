@@ -4,7 +4,7 @@ from j_chess_lib import __version__ as __lib__version__, __schema_version__, __a
 
 __author__ = """RedRem95"""
 __email__ = 'redrem@botschmot.de'
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 __project_name__ = "J-Chess Client Manager"
 
 SYSTEM_LOGGER.info(f"Running \"{__project_name__}\" Version {__version__} by {__author__}")
