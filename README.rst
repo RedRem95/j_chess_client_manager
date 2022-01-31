@@ -24,6 +24,13 @@ Features
 * Start clients using a UI
 * See the current playstate of your clients
 
+TODO
+####
+
+* Make clients stoppable
+* Performance improvements
+* Let user define own metrics to be shown
+
 Usage
 -----
 
