@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = python -msphinx
-SPHINXPROJ    = j_chess_bot_manager
+SPHINXPROJ    = j_chess_client_manager
 SOURCEDIR     = .
 BUILDDIR      = _build
 

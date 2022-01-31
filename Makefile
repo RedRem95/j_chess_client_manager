@@ -48,7 +48,7 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr .pytest_cache
 
 lint/flake8: ## check style with flake8
-	flake8 j_chess_bot_manager tests
+	flake8 j_chess_client_manager tests
 
 lint: lint/flake8 ## check style
 
@@ -59,15 +59,15 @@ test-all: ## run tests on every Python version with tox
 	tox
 
 coverage: ## check code coverage quickly with the default Python
-	coverage run --source j_chess_bot_manager setup.py test
+	coverage run --source j_chess_client_manager setup.py test
 	coverage report -m
 	coverage html
 	$(BROWSER) htmlcov/index.html
 
 docs: ## generate Sphinx HTML documentation, including API docs
-	rm -f docs/j_chess_bot_manager.rst
+	rm -f docs/j_chess_client_manager.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ j_chess_bot_manager
+	sphinx-apidoc -o docs/ j_chess_client_manager
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html

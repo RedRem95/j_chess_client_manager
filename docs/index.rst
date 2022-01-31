@@ -1,5 +1,5 @@
 Welcome to j-chess bot manager's documentation!
-======================================
+===============================================
 
 .. toctree::
    :maxdepth: 2

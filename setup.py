@@ -7,8 +7,11 @@ from setuptools import setup, find_packages
 with open('README.rst') as readme_file:
     readme = readme_file.read()
 
-with open('HISTORY.rst') as history_file:
-    history = history_file.read()
+try:
+    with open('HISTORY.rst') as history_file:
+        history = history_file.read()
+except FileNotFoundError:
+    history = ""
 
 requirements = ["j-chess-lib", "asciimatics"]
 
@@ -37,7 +40,7 @@ setup(
     },
     install_requires=requirements,
     license="GNU General Public License v3",
-    long_description=readme + '\n\n' + history,
+    long_description=readme + ('\n\n' if len(history) > 0 else '') + history,
     include_package_data=True,
     keywords='j_chess_client_manager',
     name='j_chess_client_manager',
