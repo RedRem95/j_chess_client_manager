@@ -7,7 +7,7 @@ j-chess bot manager
         :target: https://pypi.python.org/pypi/j_chess_client_manager
 
 .. image:: https://readthedocs.org/projects/j-chess-client-manager/badge/?version=latest
-        :target: https://j-chess-bot-manager.readthedocs.io/en/latest/?version=latest
+        :target: https://j-chess-client-manager.readthedocs.io/en/latest/?version=latest
         :alt: Documentation Status
 
 
@@ -15,7 +15,7 @@ Manager for bots designed for the awesome j-chess-server using the j-chess-lib f
 
 
 * Free software: GNU General Public License v3
-* Documentation: https://j-chess-bot-manager.readthedocs.io.
+* Documentation: https://j-chess-client-manager.readthedocs.io.
 
 
 Features
