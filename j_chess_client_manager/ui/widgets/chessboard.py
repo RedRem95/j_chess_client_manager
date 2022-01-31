@@ -42,7 +42,6 @@ class ChessBoard(Widget):
         self._provider = value
 
     def update(self, frame_no):
-        SYSTEM_LOGGER.error("Chessboard update :)")
         frame = self.frame
         status_height = self._draw_status(frame=frame, margin=3)
         self._draw_chess_board(frame=frame, y_off=status_height)
