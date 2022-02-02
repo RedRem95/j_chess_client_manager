@@ -46,7 +46,7 @@ class Typeable:
         return ClientTypes.Unknown
 
 
-class SuperProvider(MetricProvider, BoardProvider, Typeable, ABC):
+class SuperProvider(BoardProvider, Typeable, ABC):
     pass
 
 
