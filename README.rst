@@ -55,7 +55,7 @@ Then install the bot manager using
 
 .. code-block::
 
-    $pip install j_chess_bot_manager
+    $pip install j_chess_client_manager
 
 Then start the manager by calling
 
