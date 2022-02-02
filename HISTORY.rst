@@ -2,6 +2,13 @@
 History
 =======
 
+0.2.0 (2022-02-01)
+------------------
+
+* Updated UI to use library version 0.6.0
+  * Metrics are now also provided by AI
+
+
 0.1.3 (2022-01-31)
 ------------------
 
