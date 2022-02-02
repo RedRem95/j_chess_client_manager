@@ -153,7 +153,6 @@ class ClientView(Frame):
             k[len(ai_class.__name__) + 2:]: self._convertors[k](v) for k, v in self.data.items() if
             str(k).startswith(ai_class.__name__)
         }
-        SYSTEM_LOGGER.info(f"Creating connection: {[(k, type(v), v) for k, v in connection_parameters.items()]}")
         connection = Connection(**connection_parameters)
 
         ai = wrap_ai(ai_class, init_values=ai_parameter, need_update=self._invalidate_frame)

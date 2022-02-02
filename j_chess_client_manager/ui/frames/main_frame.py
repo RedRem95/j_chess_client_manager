@@ -108,7 +108,7 @@ class MainFrame(Frame):
         self._edit_button.disabled = True
         self._delete_button.disabled = val is None
 
-        self._set_metrics([] if val is None else val.metrics())
+        self._set_metrics([] if val is None else [(tuple(str(y) for y in x), i) for i, x in enumerate(val.metrics())])
         self._chessboard.data_provider = val
 
     def _update(self, frame_no):

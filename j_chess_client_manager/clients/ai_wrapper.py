@@ -3,12 +3,11 @@ from typing import Type, Any, Dict, Optional, Tuple, List, Union, Callable
 from uuid import UUID
 
 from j_chess_lib.ai import StoreAI, AI
-from j_chess_lib.ai.Container import GameState
+from j_chess_lib.ai.container import GameState
 from j_chess_lib.communication import MoveData, MatchStatusData, MatchFormatData
 
-from . import SuperProvider, MetricProvider
+from . import SuperProvider
 from j_chess_client_manager.logging import SYSTEM_LOGGER
-from j_chess_lib.ai.Sample import SampleAI
 
 
 def wrap_ai(
@@ -41,20 +40,19 @@ def wrap_ai(
         def fen(self) -> str:
             return self._fen
 
-        def metrics(self) -> List[Tuple[Tuple[str, str], int]]:
+        def metrics(self) -> List[Tuple[str, Any]]:
             en_passant = self.en_passant()
             castling = self.castling()
-            ret = [
-                (("Turn", str(self.turn())), 1),
-                (("Current player", "white" if self.white_turn() else "black"), 2),
-                (("En passant", "---" if en_passant is None else en_passant), 3),
-                (("Castling white", f"King: {castling['w']['k']}; Queen: {castling['w']['q']}"), 4),
-                (("Castling black", f"King: {castling['b']['k']}; Queen: {castling['b']['q']}"), 5),
-                (("Halfmove clock", f"{self.half_moves_since_pawn()}"), 5),
+            own_metrics = [
+                ("Turn", str(self.turn())),
+                ("Current player", "white" if self.white_turn() else "black"),
+                ("En passant", "---" if en_passant is None else en_passant),
+                ("Castling white", f"King: {castling['w']['k']}; Queen: {castling['w']['q']}"),
+                ("Castling black", f"King: {castling['b']['k']}; Queen: {castling['b']['q']}"),
+                ("Halfmove clock", f"{self.half_moves_since_pawn()}"),
             ]
-            if issubclass(base_ai, MetricProvider):
-                ret += base_ai.metrics(self=self)
-            return ret
+            metrics = super().metrics()
+            return own_metrics + metrics
 
         @property
         def white_name(self):
