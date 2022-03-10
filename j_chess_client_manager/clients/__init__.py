@@ -6,6 +6,7 @@ from j_chess_lib.ai import AI
 
 from .metrics import MetricProvider
 from .board import BoardProvider
+from .tournament import TournamentParticipator
 from .refresh import RefreshInitiator
 
 
@@ -46,7 +47,7 @@ class Typeable:
         return ClientTypes.Unknown
 
 
-class SuperProvider(BoardProvider, Typeable, ABC):
+class SuperProvider(BoardProvider, TournamentParticipator, Typeable, ABC):
     pass
 
 

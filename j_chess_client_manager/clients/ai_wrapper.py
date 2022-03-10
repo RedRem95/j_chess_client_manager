@@ -11,13 +11,18 @@ from j_chess_client_manager.logging import SYSTEM_LOGGER
 
 
 def wrap_ai(
-    base_ai: Type[AI], init_values: Dict[str, Any], need_update: Callable[[Union[AI, SuperProvider]], None] = None
+    base_ai: Type[AI], init_values: Dict[str, Any], need_update: Callable[[Union[AI, SuperProvider]], None] = None,
+    tournament_code: Optional[str] = None
 ) -> Union[AI, SuperProvider]:
     if need_update is None:
         def need_update(*args, **kwargs):
             pass
 
     class _WrappedAI(SuperProvider, base_ai):
+
+        @property
+        def tournament_code(self) -> Optional[str]:
+            return tournament_code
 
         def __init__(self, base_init_values: Dict[str, Any]):
             super(_WrappedAI, self).__init__(**base_init_values)

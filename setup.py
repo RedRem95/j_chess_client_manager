@@ -13,7 +13,7 @@ try:
 except FileNotFoundError:
     history = ""
 
-requirements = ["j-chess-lib", "asciimatics"]
+requirements = ["j-chess-lib>=0.7.0", "asciimatics", "pyperclip"]
 
 test_requirements = [ ]
 

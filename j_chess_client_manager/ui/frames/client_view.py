@@ -1,11 +1,13 @@
 from enum import Enum
 import inspect
 from typing import Dict, Callable, Any
+from uuid import uuid4, UUID
 
+import pyperclip
 from asciimatics.exceptions import NextScene, ResizeScreenError, StopApplication, InvalidFields, Highlander
 from asciimatics.screen import Screen
 from asciimatics.widgets import (
-    Frame, Layout, Text, TextBox, Button, DropdownList, RadioButtons, Label, Divider, PopUpDialog
+    Frame, Layout, Text, TextBox, Button, DropdownList, RadioButtons, Label, Divider, PopUpDialog, CheckBox
 )
 from j_chess_lib.ai import AI, StoreAI, DumbAI
 from j_chess_lib.ai.Sample import SampleAI
@@ -49,9 +51,15 @@ class ClientView(Frame):
         # Create the form for displaying the list of contacts.
         selection_layout = Layout([100], fill_frame=False)
         self._type_layout = Layout([100], fill_frame=False)
+        self._tournament_selection_layout = Layout([100], fill_frame=False)
+        self._tournament_layout = Layout([100], fill_frame=False)
+        self._component_selection_layout = Layout([100], fill_frame=False)
         self._component_layout = Layout([100], fill_frame=True)
         self.add_layout(selection_layout)
         self.add_layout(self._type_layout)
+        self.add_layout(self._tournament_selection_layout)
+        self.add_layout(self._tournament_layout)
+        self.add_layout(self._component_selection_layout)
         self.add_layout(self._component_layout)
         selection_layout.add_widget(self._type_selector)
 
@@ -80,6 +88,64 @@ class ClientView(Frame):
             self._type_layout.add_widget(widget)
 
         self._type_layout.add_widget(Divider())
+
+        tournament_selector = [None]
+
+        def tournament_selection():
+            self._tournament_layout.clear_widgets()
+            selected_tournament = tournament_selector[0].value
+            _editable = False
+            if selected_tournament == 0:
+                return
+            elif selected_tournament == 1:
+                _tournament_code = str(uuid4())
+                try:
+                    pyperclip.copy(_tournament_code)
+                    self.scene.add_effect(PopUpDialog(
+                        screen=self.screen,
+                        text=f"Created tournament code {_tournament_code} and copied it to your clipboard",
+                        buttons=["Ok"],
+                        on_close=None)
+                    )
+                except pyperclip.PyperclipException as e:
+                    self.scene.add_effect(PopUpDialog(
+                        screen=self.screen,
+                        text=f"Created tournament code {_tournament_code} but could not copy it to your clipboard.\n"
+                             f"{e}",
+                        buttons=["Ok"],
+                        on_close=None)
+                    )
+                _editable = False
+            else:
+                _tournament_code = "Enter Code here"
+                _editable = True
+
+            def _validator(_uuid):
+                # noinspection PyBroadException
+                try:
+                    _ = UUID(_uuid)
+                    if _.version != 4:
+                        raise Exception()
+                except Exception:
+                    return False
+                return True
+
+            tc_widget = Text(label="Tournament code", name="Client__Tournament_code", readonly=not _editable,
+                             validator=_validator)
+            tc_widget.value = _tournament_code
+            self._tournament_layout.add_widget(tc_widget)
+            self._tournament_layout.add_widget(Divider())
+            self.fix()
+
+        tournament_selector[0] = RadioButtons(
+            options=[("Quick play", 0), ("Enter tournament code", 2), ("Generate tournament code", 1)],
+            label="Tournament?",
+            name="Client__Tournament_selection",
+            on_change=tournament_selection
+        )
+
+        self._tournament_selection_layout.add_widget(tournament_selector[0])
+        self._tournament_selection_layout.add_widget(Divider())
 
         available_ais = get_all_ais()
         # SYSTEM_LOGGER.info(f"Found {len(available_ais)} AI classes")
@@ -116,12 +182,12 @@ class ClientView(Frame):
             setup_components()
 
             # noinspection PyTypeChecker
-            self._type_layout.add_widget(ai_selector[0])
-            self._type_layout.add_widget(Divider())
+            self._component_selection_layout.add_widget(ai_selector[0])
+            self._component_selection_layout.add_widget(Divider())
         else:
-            self._type_layout.add_widget(Label("You have to provide at least one implemented AI-class.\n"
-                                               "Maybe you forgot to include the package its in? If so"
-                                               "use --with-package to point to it"))
+            self._component_selection_layout.add_widget(Label("You have to provide at least one implemented AI-class.\n"
+                                                              "Maybe you forgot to include the package its in? If so"
+                                                              "use --with-package to point to it"))
 
     def _build_spectator_ui(self):
         self._type_layout.add_widget(Label("Spectators are not yet supported... :("))
@@ -129,6 +195,9 @@ class ClientView(Frame):
 
     def _select_type(self):
         self._type_layout.clear_widgets()
+        self._tournament_selection_layout.clear_widgets()
+        self._component_selection_layout.clear_widgets()
+        self._tournament_layout.clear_widgets()
         self._component_layout.clear_widgets()
         t = self._type_selector.value
         if t == ClientTypes.AI:
@@ -155,11 +224,18 @@ class ClientView(Frame):
         }
         connection = Connection(**connection_parameters)
 
-        ai = wrap_ai(ai_class, init_values=ai_parameter, need_update=self._invalidate_frame)
+        tournament_code = None if \
+            self.data["Client__Tournament_selection"] <= 0 else \
+            self.data["Client__Tournament_code"]
+
+        ai = wrap_ai(ai_class, init_values=ai_parameter, need_update=self._invalidate_frame,
+                     tournament_code=tournament_code)
         SYSTEM_LOGGER.info(f"Created connection {connection}; Created AI {ai}")
-        client = Client(connection=connection, ai=ai)
+        client = Client(connection=connection, ai=ai, tournament_code=tournament_code)
         client.start()
-        SYSTEM_LOGGER.info(f"Started client {client}")
+        SYSTEM_LOGGER.info(
+            f"Started client {client}{'' if tournament_code is None else f' for tournament {tournament_code}'}"
+        )
         self._ai_adder(ai)
         # raise Exception(f"{pformat(connection_parameters)}\n{ai_class}\n{pformat(ai_parameter)}")
 
