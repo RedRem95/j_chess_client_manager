@@ -94,7 +94,14 @@ class MainFrame(Frame):
                 return _x.name
             except AttributeError:
                 return _x.__class__.__name__
-        self._ai_list.options = [(f"{x.get_client_type().fixed_represent()} {get_name(x)}", x) for x in self._ais]
+        def get_tournament_code(_x: SuperProvider):
+            try:
+                return f" [{_x.tournament_code}]" if _x.tournament_code else ""
+            except AttributeError:
+                return ""
+        self._ai_list.options = [
+            (f"{x.get_client_type().fixed_represent()} {get_name(x)}{get_tournament_code(x)}", x) for x in self._ais
+        ]
 
     @property
     def current_client(self) -> Optional[SuperProvider]:
