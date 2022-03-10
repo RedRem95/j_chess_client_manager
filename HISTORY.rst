@@ -2,6 +2,13 @@
 History
 =======
 
+0.3.0 (2022-03-10)
+------------------
+
+* Updated UI to use library version 0.7.1
+* Implemented ability to either generate or insert tournament code
+
+
 0.2.0 (2022-02-01)
 ------------------
 
