@@ -30,6 +30,10 @@ def main():
 
     for package in args.package:
         package: str
+        import os
+        import sys
+        SYSTEM_LOGGER.info(os.getcwd())
+        sys.path.append(os.getcwd())
         try:
             importlib.import_module(package)
             SYSTEM_LOGGER.info(f"Imported \"{package}\"")
