@@ -2,6 +2,11 @@
 History
 =======
 
+0.3.2 (2022-03-24)
+------------------
+
+* Fixed bug where sometimes imports of modules would fail cause of missing python path
+
 0.3.1 (2022-03-24)
 ------------------
 
