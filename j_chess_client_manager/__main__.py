@@ -1,5 +1,5 @@
 """Console script for j_chess_client_manager."""
-from . import logging
+from . import SYSTEM_LOGGER
 import argparse
 import sys
 from typing import Any
@@ -32,9 +32,9 @@ def main():
         package: str
         try:
             importlib.import_module(package)
-            print(f"Imported \"{package}\"")
+            SYSTEM_LOGGER.info(f"Imported \"{package}\"")
         except ModuleNotFoundError:
-            print(f"Package \"{package}\" could not be imported")
+            SYSTEM_LOGGER.info(f"Package \"{package}\" could not be imported")
 
     last_scene: Any = None
 
